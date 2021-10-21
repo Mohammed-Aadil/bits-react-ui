@@ -22,10 +22,10 @@ class TodoList extends Component {
 				key: Date.now()
 			};
 			axios.post('/todo', newItem)
-			.then(() => {
+			.then((data) => {
 				this.setState((prevState) => {
 					return {
-						items: prevState.items.concat(newItem)
+						items: prevState.items.concat(data.data)
 					};
 				});
 				this._inputElement.value = "";
@@ -36,10 +36,10 @@ class TodoList extends Component {
 	}
 	deleteItem(key){
 		var filteredItems = this.state.items.filter(function(item) {
-			return (item.key !== key);
+			return (item._id !== key);
 		});
 
-		axios.post('/todo', key)
+		axios.delete('/todo/'+key)
 		.then(() => {
 			this.setState({
 				items: filteredItems
